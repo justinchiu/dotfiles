@@ -15,3 +15,8 @@ add-highlighter global/ regex \h+$ 0:Error
 
 # Softwrap long lines
 add-highlighter global/ wrap -word -indent
+
+# Haskell-specific settings
+hook global WinSetOption filetype=haskell %{
+    set-option window indentwidth 2
+}
