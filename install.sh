@@ -50,13 +50,28 @@ install_codex() {
     fi
 }
 
+# uv installation
+install_uv() {
+    echo "Installing uv..."
+    if command -v uv &> /dev/null; then
+        echo "uv already installed: $(uv --version)"
+    else
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+    fi
+}
+
 # Run installations
 install_nvm
 install_node
 install_claude_code
 install_codex
+install_uv
 
-sudo apt-get install -y kakoune tmux
+if command -v sudo &> /dev/null; then
+    sudo apt-get install -y kakoune tmux
+else
+    apt-get install -y kakoune tmux
+fi
 
 [ -d dotfiles ] || git clone ssh://git@github.com/justinchiu/dotfiles
 cp dotfiles/.tmux.* ~/
