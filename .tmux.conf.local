@@ -410,8 +410,8 @@ set -g mouse on
 set -gu prefix2
 unbind C-a
 unbind C-b
-set -g prefix 'C-a'
-bind 'C-a' send-prefix
+set -g prefix 'C-\'
+bind 'C-\' send-prefix
 
 # Create splits and vertical splits
 bind v split-window -h -l 50%
