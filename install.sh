@@ -56,7 +56,12 @@ install_node
 install_claude_code
 install_codex
 
-sudo apt-get install kakoune tmux
+sudo apt-get install -y kakoune tmux
+
+[ -d dotfiles ] || git clone ssh://git@github.com/justinchiu/dotfiles
+cp dotfiles/.tmux.* ~/
+mkdir -p ~/.config/kak
+cp dotfiles/kakrc ~/.config/kak/kakrc
 
 echo ""
 echo "Installation complete!"
