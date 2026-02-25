@@ -50,6 +50,23 @@ install_codex() {
     fi
 }
 
+# AWS CLI installation
+install_awscli() {
+    echo "Installing AWS CLI..."
+    if command -v aws &> /dev/null; then
+        echo "AWS CLI already installed: $(aws --version)"
+    else
+        curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip -q -o awscliv2.zip
+        if command -v sudo &> /dev/null; then
+            sudo ./aws/install --update
+        else
+            ./aws/install --update
+        fi
+        rm -rf awscliv2.zip aws
+    fi
+}
+
 # uv installation
 install_uv() {
     echo "Installing uv..."
@@ -66,6 +83,7 @@ install_node
 install_claude_code
 install_codex
 install_uv
+install_awscli
 
 if command -v sudo &> /dev/null; then
     sudo apt-get install -y kakoune tmux
@@ -73,10 +91,12 @@ else
     apt-get install -y kakoune tmux
 fi
 
+pushd $HOME
 [ -d dotfiles ] || git clone ssh://git@github.com/justinchiu/dotfiles
 cp dotfiles/.tmux.* ~/
 mkdir -p ~/.config/kak
 cp dotfiles/kakrc ~/.config/kak/kakrc
+popd
 
 echo ""
 echo "Installation complete!"
