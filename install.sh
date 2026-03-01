@@ -86,8 +86,10 @@ install_uv
 install_awscli
 
 if command -v sudo &> /dev/null; then
+    sudo apt-get update -y
     sudo apt-get install -y kakoune tmux
 else
+    apt-get update -y
     apt-get install -y kakoune tmux
 fi
 
