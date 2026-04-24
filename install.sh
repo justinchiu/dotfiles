@@ -77,6 +77,19 @@ install_uv() {
     fi
 }
 
+# Ensure ~/.local/bin is on PATH (claude, uv, etc. install there)
+ensure_local_bin_on_path() {
+    local line='export PATH="$HOME/.local/bin:$PATH"'
+    for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        [ -f "$rc" ] || continue
+        if ! grep -qF "$line" "$rc"; then
+            echo "Adding ~/.local/bin to PATH in $rc"
+            printf '\n# Added by dotfiles/install.sh\n%s\n' "$line" >> "$rc"
+        fi
+    done
+    export PATH="$HOME/.local/bin:$PATH"
+}
+
 # Run installations
 install_nvm
 install_node
@@ -84,6 +97,7 @@ install_claude_code
 install_codex
 install_uv
 install_awscli
+ensure_local_bin_on_path
 
 if command -v sudo &> /dev/null; then
     sudo apt-get update -y
@@ -95,7 +109,7 @@ fi
 
 pushd $HOME
 [ -d dotfiles ] || git clone ssh://git@github.com/justinchiu/dotfiles
-cp dotfiles/.tmux.* ~/
+cp ~/dotfiles/.tmux.* ~/
 mkdir -p ~/.config/kak
 cp dotfiles/kakrc ~/.config/kak/kakrc
 popd
